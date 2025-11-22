@@ -13,6 +13,8 @@ app.use(express.json());
 
 const uri =
   "mongodb+srv://simpleDBUser:OnGDhS1DhZhi2tlA@cluster0.eeupvnz.mongodb.net/?appName=Cluster0";
+
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -20,6 +22,8 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
+
+
 async function run() {
   try {
     await client.connect();
@@ -40,6 +44,9 @@ async function run() {
     // await client.close();
   }
 }
+
+
+
 run().catch(console.dir);
 app.get("/", (req, res) => {
   res.send("Simple Crud Running");
