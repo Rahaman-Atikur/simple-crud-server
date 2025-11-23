@@ -27,13 +27,16 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const userCollection = client.db('usersdb').collection('users');
+    const database = client.db('userdb');
+    // const userCollection = client.db('users').collection('users');
+    const userCollection = database.collection('users');
+
     app.post('/users', async (req, res) => {
-      // const newUser = req.body;
-      // const result = await userCollection.insertOne(newUser);
-      const cursor = userCollection.find();
-      const result = await cursor.toArray();
+      console.log('data in the server', req.body);
+      const newUser = req.body;
+      const result = await userCollection.insertOne(newUser);
       res.send(result);
+      
     })
     await client.db("admin").command({ ping: 1 });
     console.log(
