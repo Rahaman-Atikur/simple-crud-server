@@ -27,16 +27,11 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const database = client.db('userdb');
-    // const userCollection = client.db('users').collection('users');
-    const userCollection = database.collection('users');
-
-    app.post('/users', async (req, res) => {
-      console.log('data in the server', req.body);
+    const userCollection = client.db('userdb').collection('users');
+    app.post('/users',async(req,res)=>{
       const newUser = req.body;
       const result = await userCollection.insertOne(newUser);
       res.send(result);
-      
     })
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -51,6 +46,14 @@ async function run() {
 
 
 run().catch(console.dir);
+
+app.get("/users",async(req,res)=>{
+  const cursor = userCollection.find();
+  const result = await cursor.toArray();
+  res.send(result);
+})
+
+
 app.get("/", (req, res) => {
   res.send("Simple Crud Running");
 });
