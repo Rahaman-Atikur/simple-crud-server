@@ -28,7 +28,16 @@ async function run() {
   try {
     await client.connect();
     const userCollection = client.db('userdb').collection('users');
-    app.post('/users',async(req,res)=>{
+
+    app.get("/users", async (req, res) => {
+      const cursor = userCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
+
+    app.post('/users', async (req, res) => {
       const newUser = req.body;
       const result = await userCollection.insertOne(newUser);
       res.send(result);
@@ -47,11 +56,7 @@ async function run() {
 
 run().catch(console.dir);
 
-app.get("/users",async(req,res)=>{
-  const cursor = userCollection.find();
-  const result = await cursor.toArray();
-  res.send(result);
-})
+
 
 
 app.get("/", (req, res) => {
