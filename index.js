@@ -42,6 +42,12 @@ async function run() {
       const result = await userCollection.insertOne(newUser);
       res.send(result);
     })
+
+    app.delete('/users/:id', (req, res) => {
+      console.log(req.params);
+      const id = req.params.id;
+      console.log('To be Deleted:',id);
+    })
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
@@ -51,14 +57,7 @@ async function run() {
     // await client.close();
   }
 }
-
-
-
 run().catch(console.dir);
-
-
-
-
 app.get("/", (req, res) => {
   res.send("Simple Crud Running");
 });
