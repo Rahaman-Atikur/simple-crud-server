@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
@@ -43,10 +43,13 @@ async function run() {
       res.send(result);
     })
 
-    app.delete('/users/:id', (req, res) => {
+    app.delete('/users/:id',async (req, res) => {
       console.log(req.params);
       const id = req.params.id;
-      console.log('To be Deleted:',id);
+      const query = {_id: new ObjectId(id)}
+      const result = await userCollection.deleteOne(query);
+      res.send(result);
+      // console.log('To be Deleted:',id);
     })
     await client.db("admin").command({ ping: 1 });
     console.log(
